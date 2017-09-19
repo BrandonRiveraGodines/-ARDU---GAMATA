@@ -13,10 +13,6 @@
 #define DHTPIN_1 5  // Pin para el sensor DHT22 #1
 #define DHTPIN_2 5  // Pin para el sensor DHT22 #2
 #define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
-DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor
-DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor
-float temp, hum; // Se crean variables para obtener los datos.
-int a = 0, b = 0;
 
 String comando;
 
@@ -38,10 +34,11 @@ int Paso [ 8 ][ 4 ] = {
   {1, 0, 0, 1}
 };
 
-
-
-
-
+// Variables necesarias para el DHT
+DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor
+DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor
+float temp, hum; // Se crean variables para obtener los datos.
+int c = 0, b = 0;
 
 void setup() {
   // Setup necesario para los motores
@@ -57,7 +54,8 @@ void setup() {
   pinMode(ON4, OUTPUT);
 
   // Setup necesario para los sensores DHT22
-  dht.begin(); // Se inicia el sensor.
+  dht_1.begin(); // Se inicia el sensor (1).
+  dht_2.begin(); // Se inicia el sensor (2).
 }
 
 void loop() {
@@ -69,17 +67,21 @@ void loop() {
   }
 
   if (comando.equals("bajar")) {
-  Direction = true;
-  Direction2 = false;
-  motores();
+    Direction = true;
+    Direction2 = false;
+    motores();
   }
 
-  if (comando.equals("setear")){
+  if (comando.equals("setear")) {
     setTempHum();
   }
-}
-/* Inicia el codigo para el motor
 
+  if (comando.equals("leertemphum")) {
+    leerDHTs();
+  }
+}
+/*
+    Inicia el codigo para el motor
 */
 void motores() {
   for (int a = 0; a < 4; a++) {
@@ -130,23 +132,43 @@ void SetDirection2() {
    Terminan los codigos para los motores
 */
 
-void setTempHum(){
+/*
+   Comienzan los codigos para los DHT22
+*/
+
+void setTempHum() {
   Serial.println("Favor de introducir la temperatura estandar.");
-  while(a == 0){
+  while (c == 0) {
     temp = Serial.parseFloat();
     delay(500);
-    if(temp){
-      a = 1;
+    if (temp) {
+      c = 1;
     }
   }
   Serial.println("Favor de introdicr la humedad estandar.");
-  while(b == 0){
+  while (b == 0) {
     hum = Serial.parseFloat();
     delay(500);
-    if(hum){
+    if (hum) {
       b = 1;
     }
   }
 }
+void leerDHTs() {
+  float h1 = dht_1.readHumidity(); // Lee la humedad del primer sensor.
+  float h2 = dht_2.readHumidity(); // Lee la humedad del segundo sensor
+  float t1 = dht_1.readTemperature(); // Lee la temperatura del primer sensor.
+  float t2 = dht_2.readTemperature(); // Lee la temperatura del segundo sensor.
+  float h = (h1 + h2) / 2;
+  float t = (t1 + t2) / 2;
+
+  if (t >= temp) {
+
+  }
+  if (h >= hum) {
+
+  }
+}
+
 
 
