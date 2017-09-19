@@ -7,6 +7,8 @@
 #define ON3 7     // Pines para M2
 #define ON4 6     // Pines para M2
 
+String comando;
+
 // Variables necesarias para el motor.
 int steps_left=4095;
 boolean Direction = true;
@@ -33,6 +35,7 @@ int Paso [ 8 ][ 4 ] ={
 void setup() {
   // Setup necesario para los motores
   Serial.begin(9600);
+  comando.reserve(200);
   pinMode(IN1, OUTPUT); 
   pinMode(IN2, OUTPUT); 
   pinMode(IN3, OUTPUT); 
@@ -41,10 +44,67 @@ void setup() {
   pinMode(ON2, OUTPUT); 
   pinMode(ON3, OUTPUT); 
   pinMode(ON4, OUTPUT);
-
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if(comando.equals("subir")){
+    
+  }
 
+  if(comando.equals("bajar"){
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }
+/* Inicia el codigo para el motor 
+ *
+*/
+void stepper(){
+    digitalWrite( IN1, Paso[Steps][ 0] );
+    digitalWrite( IN2, Paso[Steps][ 1] );
+    digitalWrite( IN3, Paso[Steps][ 2] );
+    digitalWrite( IN4, Paso[Steps][ 3] );
+    SetDirection();
+}
+
+void stepper2(){
+  digitalWrite( ON1, Paso[Steps2][ 0] );
+  digitalWrite( ON2, Paso[Steps2][ 1] );
+  digitalWrite( ON3, Paso[Steps2][ 2] );
+  digitalWrite( ON4, Paso[Steps2][ 3] );
+  SetDirection2();  
+}
+
+void SetDirection(){
+    if(Direction)
+        Steps++;
+    else
+        Steps--; 
+    Steps = ( Steps + 7 ) % 7 ;
+}
+
+void SetDirection2(){
+    if(Direction2)
+        Steps2++;
+    else
+        Steps2--; 
+    Steps2 = ( Steps2 + 7 ) % 7 ;
+}
+
+/*
+ * Terminan los codigos para los motores 
+ */
+ */
