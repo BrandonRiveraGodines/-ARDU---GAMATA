@@ -84,29 +84,29 @@ void loop() {
     motores();
   }
 
-  if (comando.equals("bajar")) {
+   else if (comando.equals("bajar")) {
     Direction = true;
     Direction2 = false;
     motores();
   }
 
-  if (comando.equals("setear")) {
+  else if (comando.equals("setear")) {
     setTempHum();
   }
 
-  if (comando.equals("leerTempHum")) {
+  else if (comando.equals("leerTempHum")) {
     leerDHTs();
   }
 
-  if (comando.equals("getLums")){
+  else if (comando.equals("getLums")){
     leerLums();
   }
 
-  if (comando.equals("regar")){
+  else if (comando.equals("regar")){
     regar();
   }
 
-  if (comando.equals("fertilizar")){
+  else if (comando.equals("fertilizar")){
     fertilizar();
   }
 }
@@ -206,9 +206,9 @@ void serialEvent(){
     char inChar = (char)Serial.read();
     if (inChar == '\r') continue;
     if(inChar == '\n'){
-      stringComplete = true;
+      comando = true;
     } else {
-      entrada += inChar;
+      comando += inChar;
     }
   }
 }
