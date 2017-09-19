@@ -135,7 +135,6 @@ void SetDirection2() {
 /*
    Comienzan los codigos para los DHT22
 */
-
 void setTempHum() {
   Serial.println("Favor de introducir la temperatura estandar.");
   while (c == 0) {
@@ -169,6 +168,9 @@ void leerDHTs() {
 
   }
 }
+/*
+ * Terminan los codigos de DHT22
+ */
 
 
 
