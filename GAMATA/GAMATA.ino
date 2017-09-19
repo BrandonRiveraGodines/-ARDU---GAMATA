@@ -1,3 +1,4 @@
+// Defines para los motores.
 #define IN1  13   // Pines para M1
 #define IN2  12   // Pines para M1
 #define IN3  11   // Pines para M1
@@ -6,6 +7,16 @@
 #define ON2 8     // Pines para M2
 #define ON3 7     // Pines para M2
 #define ON4 6     // Pines para M2
+
+// Defines para los DHT
+#include "DHT.h"  // Cargamos la libreria DHT
+#define DHTPIN_1 5  // Pin para el sensor DHT22 #1
+#define DHTPIN_2 5  // Pin para el sensor DHT22 #2
+#define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
+DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor
+DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor
+float temp, hum; // Se crean variables para obtener los datos.
+int a = 0, b = 0;
 
 String comando;
 
@@ -44,6 +55,9 @@ void setup() {
   pinMode(ON2, OUTPUT);
   pinMode(ON3, OUTPUT);
   pinMode(ON4, OUTPUT);
+
+  // Setup necesario para los sensores DHT22
+  dht.begin(); // Se inicia el sensor.
 }
 
 void loop() {
@@ -58,6 +72,10 @@ void loop() {
   Direction = true;
   Direction2 = false;
   motores();
+  }
+
+  if (comando.equals("setear")){
+    setTempHum();
   }
 }
 /* Inicia el codigo para el motor
@@ -111,3 +129,24 @@ void SetDirection2() {
 /*
    Terminan los codigos para los motores
 */
+
+void setTempHum(){
+  Serial.println("Favor de introducir la temperatura estandar.");
+  while(a == 0){
+    temp = Serial.parseFloat();
+    delay(500);
+    if(temp){
+      a = 1;
+    }
+  }
+  Serial.println("Favor de introdicr la humedad estandar.");
+  while(b == 0){
+    hum = Serial.parseFloat();
+    delay(500);
+    if(hum){
+      b = 1;
+    }
+  }
+}
+
+
