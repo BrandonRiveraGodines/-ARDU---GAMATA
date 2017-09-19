@@ -11,13 +11,17 @@
 // Defines para los DHT
 #include "DHT.h"  // Cargamos la libreria DHT
 #define DHTPIN_1 5  // Pin para el sensor DHT22 #1
-#define DHTPIN_2 5  // Pin para el sensor DHT22 #2
+#define DHTPIN_2 4  // Pin para el sensor DHT22 #2
 #define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
 
 // Defines para la fotoresistencia
 #define ResLight 15  // Resistencia a la luz (10 lux) en Kilo Ohms
 #define ResCalib 10  // Resistencia calibración en KiloOhms
 #define ResOscu 1000 // Resistencia en oscuridad en KiloOhms
+
+// Defines para el riego y para el fertilizante.
+#define AguaPIN 3 // Pin para el riego del agua
+#define FertPIN 2 // PIN para el riego del agua
 
 String comando;
 
@@ -65,10 +69,15 @@ void setup() {
   // Setup necesario para los sensores DHT22
   dht_1.begin(); // Se inicia el sensor (1).
   dht_2.begin(); // Se inicia el sensor (2).
+  pinMode(DHTPIN_1, OUTPUT);
+  pinMode(DHTPIN_2, OUTPUT);
+
+  // Setup necesario para el riego y la fertilizacion
+  pinMode(AguaPIN, OUTPUT);
+  pinMode(FertPIN, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   if (comando.equals("subir")) {
     Direction = false;
     Direction2 = true;
@@ -91,6 +100,14 @@ void loop() {
 
   if (comando.equals("getLums")){
     leerLums();
+  }
+
+  if (comando.equals("regar")){
+    regar();
+  }
+
+  if (comando.equals("fertilizar")){
+    fertilizar();
   }
 }
 /*
@@ -140,7 +157,6 @@ void SetDirection2() {
     Steps2--;
   Steps2 = ( Steps2 + 7 ) % 7 ;
 }
-
 /*
    Terminan los codigos para los motores
 */
@@ -166,6 +182,7 @@ void setTempHum() {
     }
   }
 }
+
 void leerDHTs() {
   float h1 = dht_1.readHumidity(); // Lee la humedad del primer sensor.
   float h2 = dht_2.readHumidity(); // Lee la humedad del segundo sensor
@@ -184,6 +201,7 @@ void leerDHTs() {
 /*
  * Terminan los codigos de DHT22
  */
+ 
 /*
  * Comienzan los codigos para luminocidad
  */
@@ -197,5 +215,22 @@ void leerLums(){
  * Terminan los codigos para luminocidad
  */
 
+ /*
+  * Comienzan los codigos para regar y fertilizar.
+  */
+void regar(){
+  digitalWrite(AguaPIN, HIGH);
+  delay(2000);
+  digitalWrite(AguaPIN, LOW);
+  delay(2000);
+}
 
-
+void fertilizar(){
+  digitalWrite(FertPIN, HIGH);
+  delay(2000);
+  digitalWrite(FertPIN, LOW);
+  delay(2000);
+}
+/*
+ * Terminan los codigos de rogar y fertilizar.
+ */
