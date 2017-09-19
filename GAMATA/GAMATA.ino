@@ -14,6 +14,11 @@
 #define DHTPIN_2 5  // Pin para el sensor DHT22 #2
 #define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
 
+// Defines para la fotoresistencia
+#define ResLight 15  // Resistencia a la luz (10 lux) en Kilo Ohms
+#define ResCalib 10  // Resistencia calibración en KiloOhms
+#define ResOscu 1000 // Resistencia en oscuridad en KiloOhms
+
 String comando;
 
 // Variables necesarias para el motor.
@@ -39,6 +44,10 @@ DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Ardu
 DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor
 float temp, hum; // Se crean variables para obtener los datos.
 int c = 0, b = 0;
+
+// Variables necesarias para la resistencia foto.
+const int LDRPin = A0;
+int V, ilum;
 
 void setup() {
   // Setup necesario para los motores
@@ -76,8 +85,12 @@ void loop() {
     setTempHum();
   }
 
-  if (comando.equals("leertemphum")) {
+  if (comando.equals("leerTempHum")) {
     leerDHTs();
+  }
+
+  if (comando.equals("getLums")){
+    leerLums();
   }
 }
 /*
@@ -170,6 +183,18 @@ void leerDHTs() {
 }
 /*
  * Terminan los codigos de DHT22
+ */
+/*
+ * Comienzan los codigos para luminocidad
+ */
+void leerLums(){
+  ilum = ((long)(1024-V)*ResOscu*10)/((long)ResLight*ResCalib*V); // Usar si LDR entre GND y A0
+  ilum = ((long)V*ResOscu*10)/((long)ResLight*ResCalib*(1024-V)); // Usar si LDR entre A0 y Vcc (como en el esquema anterior)
+  Serial.println(ilum);
+  delay(1000);
+}
+/*
+ * Terminan los codigos para luminocidad
  */
 
 
