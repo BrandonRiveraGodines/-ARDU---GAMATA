@@ -24,6 +24,7 @@
 #define FertPIN 2 // PIN para el riego del agua
 
 String comando;
+boolean stringComplete = false;
 
 // Variables necesarias para el motor.
 int steps_left = 4095;
@@ -201,17 +202,6 @@ void leerDHTs() {
 /*
  * Terminan los codigos de DHT22
  */
-void serialEvent(){
-  while(Serial.available()){
-    char inChar = (char)Serial.read();
-    if (inChar == '\r') continue;
-    if(inChar == '\n'){
-      comando = true;
-    } else {
-      comando += inChar;
-    }
-  }
-}
 /*
  * Comienzan los codigos para luminocidad
  */
@@ -244,3 +234,14 @@ void fertilizar(){
 /*
  * Terminan los codigos de rogar y fertilizar.
  */
+void serialEvent(){
+  while(Serial.available()){
+    char inChar = (char)Serial.read();
+    if (inChar == '\r') continue;
+    if(inChar == '\n'){
+      stringComplete = true;
+    } else {
+      comando += inChar;
+    }
+  }
+}
