@@ -76,9 +76,14 @@ void setup() {
   // Setup necesario para el riego y la fertilizacion
   pinMode(AguaPIN, OUTPUT);
   pinMode(FertPIN, OUTPUT);
+
+  //Establecer la temperatura máxima
+  setTempHum();
 }
 
 void loop() {
+  leerDHTs();
+  
   if (comando.equals("subir")) {
     Direction = false;
     Direction2 = true;
@@ -193,10 +198,10 @@ void leerDHTs() {
   float t = (t1 + t2) / 2;
 
   if (t >= temp) {
-
+    motores();
   }
-  if (h >= hum) {
-
+  if (h < hum) {
+    motores();
   }
 }
 /*
